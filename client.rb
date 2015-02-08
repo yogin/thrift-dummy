@@ -1,5 +1,6 @@
 $:.unshift('./gen-rb')
 
+require 'benchmark'
 require 'thrift'
 require 'dummy_service'
 
@@ -9,7 +10,9 @@ begin
   client = DummyService::Client.new(protocol)
   transport.open
 
-  10000.times { |i| puts client.compute_value(i) }
+  Benchmark.bm do |x|
+    x.report { 50000.times { |i| client.compute_value(i) } }
+  end
 
 rescue Thrift::Exception => ex
   puts "Thrift exception: #{ex.message}"

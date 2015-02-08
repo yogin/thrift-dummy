@@ -13,7 +13,8 @@ end
 processor = DummyService::Processor.new(DummyServiceHandler.new)
 transport = Thrift::ServerSocket.new(9191)
 transportFactory = Thrift::BufferedTransportFactory.new
-server = Thrift::SimpleServer.new(processor, transport, transportFactory)
+#server = Thrift::SimpleServer.new(processor, transport, transportFactory)
+server = Thrift::ThreadedServer.new(processor, transport, transportFactory)
 
 puts "it begins..."
 server.serve
